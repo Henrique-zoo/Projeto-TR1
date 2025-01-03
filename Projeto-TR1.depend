@@ -2,3 +2,21 @@
 1735848028 source:/home/pedroffranca/Documentos/GitHub/Projeto-TR1/main.cpp
 	<iostream>
 
+1735876328 source:c:\users\henri\onedrive\documentos\projetos\projeto-tr1\main.cpp
+	<iostream>
+	"include/Transmissor.h"
+	"include/Receptor.h"
+
+1735873879 c:\users\henri\onedrive\documentos\projetos\projeto-tr1\include\transmissor.h
+	<string>
+	<vector>
+
+1735869634 c:\users\henri\onedrive\documentos\projetos\projeto-tr1\include\receptor.h
+
+1735869365 source:c:\users\henri\onedrive\documentos\projetos\projeto-tr1\src\camada_fisica\receptor.cpp
+
+1735876019 source:c:\users\henri\onedrive\documentos\projetos\projeto-tr1\src\camada_fisica\transmissor.cpp
+	"Transmissor.h"
+	<vector>
+	<cmath>
+

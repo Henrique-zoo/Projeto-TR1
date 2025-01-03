@@ -34,9 +34,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="include/CamadaFisica.h" />
+		<Unit filename="include/Transmissor.h" />
+		<Unit filename="include/Receptor.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/CamadaFisica.cpp" />
+		<Unit filename="src/camada_fisica/Transmissor.cpp" />
+		<Unit filename="src/camada_fisica/Receptor.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
