@@ -63,6 +63,7 @@ std::vector<int> Transmissor::bipolar(std::vector<bool> bit_stream) {
     return dig_signal;
 }
 
+
 std::vector<double> Transmissor::ask(std::vector<int> dig_signal, int a0, int a1, int sample) {
     using namespace std;
     int qtd_bits = dig_signal.size();
