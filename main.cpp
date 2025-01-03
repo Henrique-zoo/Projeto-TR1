@@ -18,7 +18,7 @@ int main() {
 
     vector<int> nzr_polar = transmissor.nzr_polar(tremDeBits);
     vector<int> manchester = transmissor.manchester(tremDeBits);
-    //vector<int> bipolar = transmissor.bipolar(tremDeBits);
+    vector<int> bipolar = transmissor.bipolar(tremDeBits);
 
     cout << "O trem de bits após a modulação nzr polar é: ";
     for (int bit : nzr_polar)
@@ -30,10 +30,10 @@ int main() {
         cout << bit << " ";
     cout << endl;
 
-    /*cout << "O trem de bits após a modulação manchester é: ";
+    cout << "O trem de bits após a modulação manchester é: ";
     for (int bit : bipolar)
         cout << bit << " ";
-    cout << endl;*/
+    cout << endl;
 
     return 0;
 }
