@@ -1,4 +1,5 @@
 # SimulNet - Projeto de TR1
+Esse é o projeto final da matéria Teleinformática e Redes 1 da Universidade de Brasília (UnB) do semestre 2024/2, ministrada pelo professor Marcelo Marotta. Ele foi desenvolvido em Python. Seu funcionamento e técnologias utilizadas são apresentados à seguir.
 
 ## Sumário
 1. [Preparação](#preparação)
@@ -19,6 +20,9 @@ O primeiro passo para executar a simulação é instalar o [Python](https://www.
     ```sh
     pip install matplotlib
     ```
+<div align="left">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" height="45" alt="python logo"/>
+</div>
 
 ## Introdução
 
