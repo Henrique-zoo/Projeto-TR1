@@ -7,11 +7,9 @@ from src.receptor import CamadaEnlaceReceptor
 from src.receptor import CamadaFisicaReceptor
 from src.utils import listBool_to_bytes, bytes_to_string
 import tkinter as tk
-from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
-import numpy as np
 
 class RECEPTOR_INTERFACE:
     def __init__(self) -> None:
@@ -85,7 +83,6 @@ class RECEPTOR_INTERFACE:
         self.camada_fisica = CamadaFisicaReceptor(sample, amplitude, frequencia, fase)
         self.camada_enlace = CamadaEnlaceReceptor()
         dig_signal: list[int] = []
-        print(mensagem)
         # Primeiro, decodifica o sinal analógico, retornando um sinal digital
         if portadora[0] == "ASK":
             amp_zero = float(portadora[1])
@@ -120,25 +117,29 @@ class RECEPTOR_INTERFACE:
         elif deteccao_correcao == "CRC-32": # Se CRC-32 foi selecionado no transmissor
             byte_stream, self.erro = self.camada_enlace.verificar_crc32(byte_stream) # Verifica o CRC-32
         print(byte_stream)
-        print(self.erro)
+        print("Houve erro" if not self.erro else "Sem erro")
         pacote: bytes = bytes()
         if enquadramento == "Contagem de Caracteres":
             pacote = self.camada_enlace.desenquadramento_contagem_de_caracteres(byte_stream)
         elif enquadramento == "Insercao de Bytes":
             pacote = self.camada_enlace.desenquadramento_insercao_de_bytes(byte_stream)
         print(pacote)
-        mensagem = pacote.decode("ascii")
-        print(mensagem)
-        self.text_mensagem.config(state="normal")  # Permitir edição temporária
-        self.text_mensagem.delete(0, tk.END)  # Limpa qualquer texto anterior
-        self.text_mensagem.insert(0, mensagem)  # Insere a nova mensagem
-        self.text_mensagem.config(state="disabled")  # Bloqueia edição novamente
-        self.detectou_erro.config(state="normal")
-        self.detectou_erro.select() if not self.erro else self.detectou_erro.deselect()
-        self.detectou_erro.config(state="disabled")
+        try:
+            mensagem = pacote.decode("ascii")
+            print(mensagem)
+            self.text_mensagem.config(state="normal")  # Permitir edição temporária
+            self.text_mensagem.delete(0, tk.END)  # Limpa qualquer texto anterior
+            self.text_mensagem.insert(0, mensagem)  # Insere a nova mensagem
+            self.text_mensagem.config(state="disabled")  # Bloqueia edição novamente
+            self.detectou_erro.config(state="normal")
+            self.detectou_erro.select() if not self.erro else self.detectou_erro.deselect()
+            self.detectou_erro.config(state="disabled")
+        except UnicodeDecodeError:
+            self.text_mensagem.config(state="normal")  # Permitir edição temporária
+            self.text_mensagem.delete(0, tk.END)  # Limpa qualquer texto anterior
+            self.text_mensagem.insert(0, "Erro ASCII")  # Insere a nova mensagem
+            self.text_mensagem.config(state="disabled")  # Bloqueia edição novamente
 
-
-        
     def criar_interface(self):
         self.frame_mensagem = tk.Frame(self.root)
         self.frame_mensagem.grid(row=0, column=0, padx=10, pady=10)
@@ -163,7 +164,7 @@ class RECEPTOR_INTERFACE:
         
         self.frame_grafico_discreto = tk.Frame(self.pnl_graficos, width=600, height=400)
         self.frame_grafico_discreto.grid(row=1, column=1, padx=10, pady=10, sticky="n")
-        self.criar_grafico_vazio(self.frame_grafico_discreto, "Sinal pós-demodulação por portadora")
+        self.criar_grafico_vazio(self.frame_grafico_discreto, "Sinal Pós-Demodulação por Portadora")
         
     def criar_grafico_vazio(self, frame: tk.Frame, titulo: str):
         fig, ax = plt.subplots()

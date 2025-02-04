@@ -1,70 +1,72 @@
-# Wave Generator with Tkinter
+# SimulNet - Projeto de TR1
 
-This project is a graphical application built with Python's Tkinter library to visualize sine waves and allow user interaction through various controls. It demonstrates the use of sliders, text boxes, and dropdown menus to manipulate and display sine wave functions and bitstream data.
+## Sumário
+1. [Preparação](#preparação)
+2. [Introdução](#introdução)
+3. [Estrutura do Projeto](#estrutura-do-projeto)
+4. [Funcionamento do Simulador](#funcionamento-do-simulador)
 
-## Features
+## Preparação
+O primeiro passo para executar a simulação é instalar o [Python](https://www.python.org/). Além dele, serão necessárias algumas de suas bibliotecas. A seguir, apresento essas bibliotecas e como instalá-las.
 
-- **Sine Wave Visualization**: Draws a sine wave on a canvas based on frequency, amplitude, and offset values.
-- **Noise Function Input**: Allows the user to input a custom noise function.
-- **Bitstream Input**: Lets users input a bitstream and select physical and link layer protocols.
-- **Interactive Controls**: Includes sliders for frequency, amplitude, and offset, as well as dropdown menus for protocol selection.
+1. Tkinter: a biblioteca utilizada para interface gráfica
 
-## Installation
+    ```sh
+    pip install tk
+    ```
+2. Matplotlib: a biblioteca usada para construir os gráficos
 
-1. Ensure you have Python installed on your system.
-2. Clone the repository or download the code.
-3. Install Tkinter if it's not already included in your Python installation. Tkinter usually comes pre-installed with Python, but if needed, you can install it using:
+    ```sh
+    pip install matplotlib
+    ```
 
-   ```sh
-   pip install tk
-   ```
+## Introdução
 
-## Usage
+O modelo OSI (Open Systems Interconnection) é um modelo de referência que descreve as funções de comunicação em redes de computadores. O modelo é dividido em sete camadas, cada uma responsável por funções específicas que garantem a comunicação eficiente entre dispositivos.
 
-1. Run the application using Python:
+![Modelo OSI de sete camadas](image/Modelo_Osi.png)
 
-   ```sh
-   python interface.py
-   ```
+Este relatório descreve a implementação de um simulador que aborda as camadas física e de enlace do modelo OSI. O objetivo principal é simular o funcionamento dessas camadas, incluindo técnicas de modulação digital (NRZ-Polar, Manchester e Bipolar), modulação por portadora (ASK, FSK e 8-QAM), enquadramento de dados (Contagem de Caracteres e Inserção de Bytes), detecção e correção de erros (Bit de Paridade, Código de Redundância Cíclica - CRC e Código de Hamming). O simulador foi desenvolvido em Python, proporcionando uma visão prática dos mecanismos fundamentais que garantem a transmissão eficiente e confiável de dados em redes de computadores.
 
-2. The application window will open with the following controls:
-   - **Frequency Slider**: Adjusts the frequency of the sine wave.
-   - **Amplitude Slider**: Adjusts the amplitude of the sine wave.
-   - **Offset Slider**: Adjusts the offset of the sine wave.
-   - **Noise Function Text Box**: Input a noise function to be visualized.
-   - **Bitstream Text Box**: Input a bitstream for protocol selection.
-   - **Physical Layer Selector**: Dropdown menu to select the physical layer protocol.
-   - **Link Layer Selector**: Dropdown menu to select the link layer protocol.
+O problema central a ser resolvido consiste na simulação de um sistema de comunicação que possibilite a transmissão de dados entre dois pontos, considerando os desafios inerentes à presença de ruído e erros de transmissão — simulados no projeto. O simulador deve ser capaz de transmitir e receber dados de forma confiável, aplicando técnicas de modulação, enquadramento, detecção e correção de erros. A comunicação entre os dois pontos é realizada por meio de **sockets**, biblioteca da linguagem Python, onde dois processos distintos — um transmissor e um receptor — interagem para simular a troca de dados em um cenário realista.
 
-3. Use the sliders to modify the sine wave parameters and see the changes in real-time.
-4. Enter a noise function and click "Send" to update the visualization.
-5. Enter a bitstream and select protocols to configure the data for visualization.
+## Estrutura do Projeto
 
-## Code Overview
+O projeto está organizado em uma estrutura de diretórios que facilita a modularidade e a manutenção do código. A seguir, descrevemos a organização dos arquivos e diretórios:
+```plaintext
+Projeto_TR1
+├─── gui
+│ ├── transmissor.py
+│ └── receptor.py
+└─── src
+  ├─── transmissor
+  │ ├── __init__.py
+  │ ├── camada_fisica.py
+  │ └── camada_enlace.py
+  ├─── receptor
+  │ ├── __init__.py
+  │ ├── camada_fisica.py
+  │ └── camada_enlace.py
+  └─── utils
+    ├── bytes_to_string.py
+    ├── listBool_to_bytes.py
+    ├── string_to_bytes.py
+    └── text_to_bytes.py
+```
 
-- **Event Handlers**:
-  - `on_selectFisica(event)`: Handles selection changes in the physical layer dropdown.
-  - `on_selectEnlace(event)`: Handles selection changes in the link layer dropdown.
-  - `bitstram_set()`: Updates the bitstream variable with the content from the bitstream text box.
-  - `functset()`: Updates the noise function and redraws the sine wave.
-  - `update_Freq(value)`, `update_Amp(value)`, `update_Offset(value)`: Update the frequency, amplitude, and offset based on slider values.
 
-- **Wave Functions**:
-  - `parsefunction(x, numeroPontos)`: Parses the noise function string and generates wave data.
-  - `num(x, function)`: Computes the wave values for a given function.
-  - `functionvalue(x, function)`: Aggregates wave data for multiple functions.
+- O diretório **gui** contém os arquivos `transmissor.py` e `receptor.py`, que são responsáveis por iniciar a interface gráfica do simulador.
+- O diretório **src** contém os módulos `transmissor` e `receptor`, que implementam as funcionalidades da camada física e de enlace do modelo OSI.
+- O diretório **utils** contém funções auxiliares que são utilizadas em diferentes partes do projeto.
 
-- **Drawing Functions**:
-  - `draw_center_lines()`: Draws center lines on the canvas.
-  - `draw_sine_wave()`: Draws the sine wave on the canvas based on current slider values and noise function.
+## Funcionamento do Simulador
 
-- **GUI Components**:
-  - `tk.Canvas`: The canvas widget where the sine wave is drawn.
-  - `tk.Scale`: Sliders for adjusting frequency, amplitude, and offset.
-  - `ttk.Combobox`: Dropdown menus for protocol selection.
-  - `tk.Text` and `tk.Button`: Text boxes and buttons for input and interaction.
+Para utilizar o simulador, é necessário executar o arquivo `transmissor.py` em um terminal e o arquivo `receptor.py` em outro. O transmissor exibe uma interface gráfica que permite configurar os parâmetros de modulação por portadora — como o tamanho da amostragem, a frequência, a amplitude e a fase padrão utilizadas para gerar o sinal —, além dos parâmetros de transmissão, como a técnica de modulação, o enquadramento de dados e a detecção de erros. A interface também possibilita a visualização dos sinais gerados após cada etapa de modulação.
 
-## License
+Por sua vez, o receptor exibe uma interface gráfica que permite visualizar o sinal recebido e a mensagem decodificada após a demodulação. Além disso, a interface do receptor conta com um botão "Abrir Servidor", que habilita o transmissor a enviar os dados.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Após configurar os parâmetros no transmissor e abrir o servidor no receptor, o usuário deve clicar no botão "Enviar Dados" na interface do transmissor para iniciar a transmissão. Esse processo garante que os dados sejam enviados e recebidos corretamente, permitindo a simulação completa da comunicação entre os dois pontos.
 
+![Interface gráfica do transmissor](Relatório/image/interface_transmissor.png)
+
+![Interface gráfica do receptor](Relatório/image/interface_receptor.png)

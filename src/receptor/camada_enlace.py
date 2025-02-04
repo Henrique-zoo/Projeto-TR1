@@ -1,5 +1,4 @@
 from math import log2
-from math import floor
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -13,23 +12,47 @@ class CamadaEnlaceReceptor:
 
     # MÉTODOS DE DESENQUADRAMENTO
     def desenquadramento_contagem_de_caracteres(self, byte_stream: bytes) -> bytes:
-        pacote: bytearray = bytearray()
+        """
+        Realiza o desenquadramento de um fluxo de bytes utilizando o método de contagem de caracteres.
+        
+        O primeiro byte de cada quadro indica o tamanho do quadro. O método extrai e concatena 
+        os dados de cada quadro para reconstruir a mensagem original.
+        
+        Parâmetros:
+            byte_stream (bytes): Fluxo de bytes contendo quadros com contagem de caracteres.
+            
+        Retorna:
+            bytes: Mensagem reconstruída após a remoção dos cabeçalhos de tamanho dos quadros.
+        """
+        pacote: bytearray = bytearray()  # Inicializa um buffer para armazenar os dados reconstruídos
         while byte_stream:
-            # Lê o cabeçalho do quadro, que indica o tamanho do quadro
+            # Lê o cabeçalho do quadro, que indica o tamanho da carga útil
             length: int = int(byte_stream[0])
-            # Remove o byte de comprimento do byte_stream
+            # Remove o byte do cabeçalho (tamanho) do fluxo de bytes
             byte_stream = byte_stream[1:]
-            # Seleciona a carga útil do quadro
+            # Obtém a carga útil do quadro com base no tamanho especificado
             frame = byte_stream[:length]
-            # Remove o quadro do byte_stream
+            # Remove o quadro processado do fluxo de bytes
             byte_stream = byte_stream[length:]
-            # Adiciona o quadro ao pacote
+            # Adiciona a carga útil extraída ao pacote final
             pacote.extend(frame)
+        # Retorna os dados reconstruídos sem os cabeçalhos de tamanho
         return bytes(pacote)
     
     def desenquadramento_insercao_de_bytes(self, byte_stream: bytes) -> bytes:
-        pacote: bytearray = bytearray()
-        esc: bool = False
+        """
+        Realiza o desenquadramento de um fluxo de bytes utilizando o método de inserção de bytes.
+        
+        O método remove bytes de flag e trata caracteres de escape para reconstruir a mensagem original.
+        
+        Parâmetros:
+            byte_stream (bytes): Fluxo de bytes contendo quadros com inserção de bytes.
+            
+        Retorna:
+            bytes: Mensagem reconstruída após a remoção dos bytes de flag e escape.
+        """
+        pacote: bytearray = bytearray()  # Inicializa um buffer para armazenar os dados reconstruídos
+        esc: bool = False  # Flag para indicar se o byte anterior era um ESC
         while byte_stream:
             byte_atual = byte_stream[:1]  # Pega o primeiro byte
             byte_stream = byte_stream[1:]  # Remove o byte processado
@@ -45,7 +68,7 @@ class CamadaEnlaceReceptor:
                 # Se for um byte normal ou um byte após ESC, adiciona ao pacote
                 pacote.extend(byte_atual)
                 esc = False  # Reseta a flag ESC
-            
+        # Retorna os dados reconstruídos sem os bytes de flag e escape
         return bytes(pacote)
 
     # MÉTODOS DE VERIFICAÇÃO DE ERROS
@@ -109,12 +132,11 @@ class CamadaEnlaceReceptor:
                 - A mensagem decodificada em bytes.
         """
         # Converte a sequência de bytes em uma lista de bits
-        encoded_bits = ''.join(f'{byte:08b}' for byte in encoded_bytes)
-        hamming_code = [int(bit) for bit in encoded_bits]
+        hamming_code: list[int] = [int(bit) for bit in ''.join(f'{byte:08b}' for byte in encoded_bytes)]
         
         r: int = 0  # Número de bits de paridade
         n: int = len(hamming_code)  # Número total de bits no código de Hamming
-        
+        print(n)
         # Calcula o número de bits de paridade
         while (2**r) < n + 1:
             r += 1
@@ -122,19 +144,20 @@ class CamadaEnlaceReceptor:
         # Verifica se há erros e corrige, se necessário
         error_position = 0
         for i in range(r):
-            pos = 2**i  # Posição do bit de paridade (1-based index)
+            pos = 2**i # Posição do bit de paridade (1-based index)
             paridade = 0
-            for j in range(1, n + 1):
-                if j & pos:  # Se o bit i está ativado em j
-                    paridade ^= hamming_code[j - 1]
+            for j in range(n):
+                if j + 1 & pos:  # Se o bit i está ativado em j
+                    paridade ^= hamming_code[j]
             if paridade != 0:
-                error_position += pos
+                error_position += pos - 1
         
         # Se houver um erro, corrige o bit correspondente
         error_detected = error_position != 0
         if error_detected:
+            print(len(hamming_code))
             print(f"Erro detectado na posição {error_position}. Corrigindo...")
-            hamming_code[error_position - 1] ^= 1  # Inverte o bit errado
+            hamming_code[error_position] ^= 1  # Inverte o bit errado
         
         # Remove os bits de paridade para obter a sequência de bits original
         original_bits = []
@@ -146,4 +169,4 @@ class CamadaEnlaceReceptor:
         decoded_bits = ''.join(original_bits)
         decoded_bytes = bytes(int(decoded_bits[i:i+8], 2) for i in range(0, len(decoded_bits), 8))
         
-        return (decoded_bytes, error_detected)
+        return decoded_bytes, error_detected

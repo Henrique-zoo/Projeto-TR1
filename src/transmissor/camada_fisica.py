@@ -42,7 +42,7 @@ class CamadaFisicaTransmissor:
         Realiza a modulação bipolar.
         Alterna entre +1 e -1 para bits 1, mantendo 0 para bits 0.
         """
-        last_one: int = 1  # Último valor usado para bit 1 (+1 ou -1)
+        last_one: int = -1  # Último valor usado para bit 1 (+1 ou -1)
         dig_signal: list[int] = []
 
         for bit in bit_stream:
@@ -76,14 +76,13 @@ class CamadaFisicaTransmissor:
         Realiza a modulação FSK (Frequency Shift Keying).
         Modula o sinal digital utilizando diferentes frequências para 0 e 1.
         """
-        print(dig_signal)
         signal: list[float] = [0.0] * (len(dig_signal) * self.sample)  # Inicializa o sinal modulado
         nrz_polar: bool = mod_digital == "NRZ-Polar"  # Verifica se a modulação digital é NRZ-Polar
 
         for i in range(len(dig_signal)):  # Para cada bit do sinal digital
             for j in range(self.sample):  # Gera amostras para cada bit
                 t: float = j / self.sample
-                if ((dig_signal[i] == 1 or dig_signal == -1) and not nrz_polar) or dig_signal[i] == 1:
+                if ((dig_signal[i] == 1 or dig_signal[i] == -1) and not nrz_polar) or dig_signal[i] == 1:
                     signal[i * self.sample + j] = self.amplitude * sin(2*pi*f_one*t + self.fase)  # A * sen (2pi*f*t + ø) - sinal para 1 (ou -1 se não for NRZ-Polar)
                 else:
                     signal[i * self.sample + j] = self.amplitude * sin(2*pi*f_zero*t + self.fase) # Sinal para 0 (ou -1 se for NRZ-Polar)

@@ -1,0 +1,31 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{socket}
+
+\PYG{k}{def} \PYG{n+nf}{enviar\PYGZus{}para\PYGZus{}o\PYGZus{}receptor}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{wave}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{HOST} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{127.0.0.1}\PYG{l+s+s1}{\PYGZsq{}}
+    \PYG{n}{PORT} \PYG{o}{=} \PYG{l+m+mi}{65432}
+    \PYG{k}{with} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{socket}\PYG{p}{(}\PYG{n}{socket}\PYG{o}{.}\PYG{n}{AF\PYGZus{}INET}\PYG{p}{,} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{SOCK\PYGZus{}STREAM}\PYG{p}{)} \PYG{k}{as} \PYG{n}{client\PYGZus{}socket}\PYG{p}{:}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n}{client\PYGZus{}socket}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{p}{(}\PYG{n}{HOST}\PYG{p}{,} \PYG{n}{PORT}\PYG{p}{)}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Connected to }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{HOST}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{PORT}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+            \PYG{n}{wave\PYGZus{}data} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+nb}{map}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{wave}\PYG{p}{)}\PYG{p}{)}
+            \PYG{n}{extra\PYGZus{}info} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mod\PYGZus{}portadora} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ASK}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+                \PYG{n}{extra\PYGZus{}info} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{amp\PYGZus{}zero}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{amp\PYGZus{}one}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mod\PYGZus{}portadora} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{FSK}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+                \PYG{n}{extra\PYGZus{}info} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{freq\PYGZus{}zero}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{freq\PYGZus{}one}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mod\PYGZus{}portadora} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{8\PYGZhy{}QAM}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+                \PYG{n}{dig\PYGZus{}data} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{; }\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+nb}{map}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}\PYG{p}{)}
+                \PYG{n}{extra\PYGZus{}info} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{dig\PYGZus{}data}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+
+            \PYG{n}{message} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{amplitude}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frequencia}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fase}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mod\PYGZus{}digital}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mod\PYGZus{}portadora}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{extra\PYGZus{}info}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{metodo\PYGZus{}enquadramento}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{metodo\PYGZus{}deteccao\PYGZus{}ou\PYGZus{}correcao}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{wave\PYGZus{}data}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{|END\PYGZus{}OF\PYGZus{}SEQUENCE}\PYG{l+s+s2}{\PYGZdq{}}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}\PYG{p}{,} \PYG{l+m+mi}{1024}\PYG{p}{)}\PYG{p}{:}
+                \PYG{k}{try}\PYG{p}{:}
+                    \PYG{n}{chunck} \PYG{o}{=} \PYG{n}{message}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:} \PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1024}\PYG{p}{]}\PYG{o}{.}\PYG{n}{encode}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ascii}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{k}{except} \PYG{n+ne}{UnicodeDecodeError} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+                    \PYG{n}{chunck} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZlt{}ERROR\PYGZgt{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{.}\PYG{n}{encode}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ascii}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Erro: Os bytes não puderam ser decodificados em ascii. }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{e}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{client\PYGZus{}socket}\PYG{o}{.}\PYG{n}{sendall}\PYG{p}{(}\PYG{n}{chunck}\PYG{p}{)}
+        \PYG{k}{except} \PYG{n+ne}{ConnectionError} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Connection failed: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{e}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}

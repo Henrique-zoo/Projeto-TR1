@@ -1,5 +1,3 @@
-from math import cos, sin, pi
-
 class CamadaFisicaReceptor:
     def __init__(self, sample, amplitude, frequencia, fase) -> None:
         self.sample = sample
@@ -102,29 +100,21 @@ class CamadaFisicaReceptor:
                 bit_stream.append(-1 if abs(cruzamentos - f_zero) < abs(cruzamentos - f_one) else 1)
             elif mod_digital == "Bipolar":
                 last_one = -1
-                if abs(cruzamentos - f_zero) > abs(cruzamentos - f_one):
+                if abs(cruzamentos - f_zero) < abs(cruzamentos - f_one):
+                    bit_stream.append(0)
+                else:
                     last_one = -last_one
                     bit_stream.append(last_one)
-                else:
-                    bit_stream.append(0)
             else:
                 bit_stream.append(0 if abs(cruzamentos - f_zero) < abs(cruzamentos - f_one) else 1) # Se a frequência estimada está mais próxima de f_zero, o bit é 0; caso contrário, é 1
 
         return bit_stream
 
+
+    """ Não funciona essa desgraça
     # 8-QAM decoding
     def decodificar_qam8(self, mod_signal: list[float], dig_modulation: str) -> list[int]:
-        """
-        Decodifica um sinal 8-QAM modulado e retorna a sequência de bits original.
-
-        Args:
-            mod_signal (list[float]): O sinal modulado em 8-QAM.
-            frequencia (float): A frequência da portadora.
-            sample (int): O número de amostras por símbolo.
-
-        Returns:
-            list[int]: O trem de bits decodificado.
-        """
+    
         # Define a constelação 8-QAM
         constellation: dict[complex, str] = {
             1 + 1j: "000",  1 - 1j:     "001",    -1 + 1j: "010",
@@ -168,3 +158,4 @@ class CamadaFisicaReceptor:
                     dig_signal.append(last_one)  # Adiciona +1 ou -1 para bits 1
             return dig_signal
         return [1 if bit else 0 for bit in bit_stream]
+    """

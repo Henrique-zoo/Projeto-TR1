@@ -1,0 +1,53 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}mensagem}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{mensagem}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{str}\PYG{p}{:}
+    \PYG{n}{mensagem} \PYG{o}{=} \PYG{n}{mensagem}\PYG{o}{.}\PYG{n}{split}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{|}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{sample} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}
+    \PYG{n}{amplitude} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+    \PYG{n}{frequencia} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{p}{)}
+    \PYG{n}{fase} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{p}{)}
+    \PYG{n}{modulacao}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{p}{]}
+    \PYG{n}{portadora}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{5}\PYG{p}{]}\PYG{o}{.}\PYG{n}{split}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{enquadramento}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{6}\PYG{p}{]}
+    \PYG{n}{deteccao\PYGZus{}correcao}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{7}\PYG{p}{]}
+    \PYG{n}{sinal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{mensagem}\PYG{p}{[}\PYG{l+m+mi}{8}\PYG{p}{]}\PYG{o}{.}\PYG{n}{split}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{, }\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica} \PYG{o}{=} \PYG{n}{CamadaFisicaReceptor}\PYG{p}{(}\PYG{n}{sample}\PYG{p}{,} \PYG{n}{amplitude}\PYG{p}{,} \PYG{n}{frequencia}\PYG{p}{,} \PYG{n}{fase}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace} \PYG{o}{=} \PYG{n}{CamadaEnlaceReceptor}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{dig\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+    \PYG{k}{if} \PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ASK}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{amp\PYGZus{}zero} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n}{amp\PYGZus{}one} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n}{dig\PYGZus{}signal} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}ask}\PYG{p}{(}\PYG{n}{sinal}\PYG{p}{,} \PYG{n}{modulacao}\PYG{p}{,} \PYG{n}{amp\PYGZus{}zero}\PYG{p}{,} \PYG{n}{amp\PYGZus{}one}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{FSK}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{freq\PYGZus{}zero} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n}{freq\PYGZus{}one} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n}{dig\PYGZus{}signal} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}fsk}\PYG{p}{(}\PYG{n}{sinal}\PYG{p}{,} \PYG{n}{modulacao}\PYG{p}{,} \PYG{n}{freq\PYGZus{}zero}\PYG{p}{,} \PYG{n}{freq\PYGZus{}one}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{8\PYGZhy{}QAM}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{dig\PYGZus{}signal} \PYG{o}{=} \PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{portadora}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{split}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{; }\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{root}\PYG{o}{.}\PYG{n}{after}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{plota\PYGZus{}grafico}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{,} \PYG{n}{sinal}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{modulacao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{NRZ\PYGZhy{}Polar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{bit\PYGZus{}stream} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}nrz\PYGZus{}polar}\PYG{p}{(}\PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{modulacao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Bipolar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{bit\PYGZus{}stream} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}bipolar}\PYG{p}{(}\PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{modulacao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Manchester}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{bit\PYGZus{}stream} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}fisica}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}manchester}\PYG{p}{(}\PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}
+    \PYG{n}{byte\PYGZus{}stream} \PYG{o}{=} \PYG{n}{listBool\PYGZus{}to\PYGZus{}bytes}\PYG{p}{(}\PYG{n}{bit\PYGZus{}stream}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{deteccao\PYGZus{}correcao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Codigo de Hamming}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{byte\PYGZus{}stream}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{erro} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace}\PYG{o}{.}\PYG{n}{corrigir\PYGZus{}hamming}\PYG{p}{(}\PYG{n}{byte\PYGZus{}stream}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{deteccao\PYGZus{}correcao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Bit de Paridade}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{byte\PYGZus{}stream}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{erro} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace}\PYG{o}{.}\PYG{n}{verificar\PYGZus{}bits\PYGZus{}de\PYGZus{}paridade}\PYG{p}{(}\PYG{n}{byte\PYGZus{}stream}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{deteccao\PYGZus{}correcao} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{CRC\PYGZhy{}32}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{byte\PYGZus{}stream}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{erro} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace}\PYG{o}{.}\PYG{n}{verificar\PYGZus{}crc32}\PYG{p}{(}\PYG{n}{byte\PYGZus{}stream}\PYG{p}{)}
+    \PYG{n}{pacote}\PYG{p}{:} \PYG{n+nb}{bytes} \PYG{o}{=} \PYG{n+nb}{bytes}\PYG{p}{(}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{enquadramento} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Contagem de Caracteres}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{pacote} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace}\PYG{o}{.}\PYG{n}{desenquadramento\PYGZus{}contagem\PYGZus{}de\PYGZus{}caracteres}\PYG{p}{(}\PYG{n}{byte\PYGZus{}stream}\PYG{p}{)}
+    \PYG{k}{elif} \PYG{n}{enquadramento} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Insercao de Bytes}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+        \PYG{n}{pacote} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{camada\PYGZus{}enlace}\PYG{o}{.}\PYG{n}{desenquadramento\PYGZus{}insercao\PYGZus{}de\PYGZus{}bytes}\PYG{p}{(}\PYG{n}{byte\PYGZus{}stream}\PYG{p}{)}
+    \PYG{n}{mensagem} \PYG{o}{=} \PYG{n}{pacote}\PYG{o}{.}\PYG{n}{decode}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ascii}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{text\PYGZus{}mensagem}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{normal}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{text\PYGZus{}mensagem}\PYG{o}{.}\PYG{n}{delete}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{tk}\PYG{o}{.}\PYG{n}{END}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{text\PYGZus{}mensagem}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{mensagem}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{text\PYGZus{}mensagem}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{disabled}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{detectou\PYGZus{}erro}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{normal}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{detectou\PYGZus{}erro}\PYG{o}{.}\PYG{n}{select}\PYG{p}{(}\PYG{p}{)} \PYG{k}{if} \PYG{o+ow}{not} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{erro} \PYG{k}{else} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{detectou\PYGZus{}erro}\PYG{o}{.}\PYG{n}{deselect}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{detectou\PYGZus{}erro}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{disabled}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}

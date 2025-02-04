@@ -1,0 +1,61 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{math} \PYG{k+kn}{import} \PYG{n}{cos}\PYG{p}{,} \PYG{n}{sin}\PYG{p}{,} \PYG{n}{pi}
+
+\PYG{k}{class} \PYG{n+nc}{CamadaFisicaReceptor}\PYG{p}{:}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{sample}\PYG{p}{,} \PYG{n}{amplitude}\PYG{p}{,} \PYG{n}{frequencia}\PYG{p}{,} \PYG{n}{fase}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{k+kc}{None}\PYG{p}{:}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample} \PYG{o}{=} \PYG{n}{sample}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{amplitude} \PYG{o}{=} \PYG{n}{amplitude}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frequencia} \PYG{o}{=} \PYG{n}{frequencia}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fase} \PYG{o}{=} \PYG{n}{fase}
+
+    \PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}nrz\PYGZus{}polar}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{bool}\PYG{p}{]}\PYG{p}{:}
+        \PYG{k}{return} \PYG{p}{[}\PYG{k+kc}{False} \PYG{k}{if} \PYG{n}{bit} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{k}{else} \PYG{k+kc}{True} \PYG{k}{for} \PYG{n}{bit} \PYG{o+ow}{in} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{]}
+
+    \PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}manchester}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{bool}\PYG{p}{]}\PYG{p}{:}
+        \PYG{n}{bit\PYGZus{}stream}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{bool}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+        \PYG{n}{i}\PYG{p}{:} \PYG{n+nb}{int} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{while} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{dig\PYGZus{}signal}\PYG{p}{)}\PYG{p}{:}
+            \PYG{n}{bit\PYGZus{}stream}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{k+kc}{True} \PYG{k}{if} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1} \PYG{k}{else} \PYG{k+kc}{False}\PYG{p}{)}
+            \PYG{n}{i} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{2}
+        \PYG{k}{return} \PYG{n}{bit\PYGZus{}stream}
+
+    \PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}bipolar}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{bool}\PYG{p}{]}\PYG{p}{:}
+        \PYG{k}{return} \PYG{p}{[}\PYG{k+kc}{False} \PYG{k}{if} \PYG{n}{bit} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{k}{else} \PYG{k+kc}{True} \PYG{k}{for} \PYG{n}{bit} \PYG{o+ow}{in} \PYG{n}{dig\PYGZus{}signal}\PYG{p}{]}
+
+    \PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}ask}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{]}\PYG{p}{,} \PYG{n}{mod\PYGZus{}digital}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{amp\PYGZus{}zero}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{amp\PYGZus{}one}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n}{mod\PYGZus{}digital} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{NRZ\PYGZhy{}Polar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+            \PYG{k}{return} \PYG{p}{[}\PYG{l+m+mi}{1} \PYG{k}{if} \PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{amp\PYGZus{}zero} \PYG{o}{+} \PYG{n}{amp\PYGZus{}one}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2} \PYG{k}{else} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{)}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{)}\PYG{p}{]}
+        \PYG{k}{elif} \PYG{n}{mod\PYGZus{}digital} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Bipolar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+            \PYG{n}{dig\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+            \PYG{n}{last\PYGZus{}one} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{)}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{)}\PYG{p}{:}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{amp\PYGZus{}zero}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{amp\PYGZus{}one}\PYG{p}{)}\PYG{p}{:}
+                    \PYG{n}{last\PYGZus{}one} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{last\PYGZus{}one}
+                    \PYG{n}{dig\PYGZus{}signal}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{last\PYGZus{}one}\PYG{p}{)}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{n}{dig\PYGZus{}signal}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+            \PYG{k}{return} \PYG{n}{dig\PYGZus{}signal}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{k}{return} \PYG{p}{[}\PYG{l+m+mi}{1} \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{amp\PYGZus{}zero}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{amp\PYGZus{}one}\PYG{p}{)} \PYG{k}{else} \PYG{l+m+mi}{0} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{)}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{)}\PYG{p}{]}
+
+    \PYG{k}{def} \PYG{n+nf}{decodificar\PYGZus{}fsk}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{mod\PYGZus{}signal}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{]}\PYG{p}{,} \PYG{n}{mod\PYGZus{}digital}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{f\PYGZus{}zero}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{n}{f\PYGZus{}one}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{1.0}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]}\PYG{p}{:}
+        \PYG{n}{bit\PYGZus{}stream}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{mod\PYGZus{}signal}\PYG{p}{)}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{)}\PYG{p}{:}
+            \PYG{n}{janela}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{]} \PYG{o}{=} \PYG{n}{mod\PYGZus{}signal}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:}\PYG{n}{i} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sample}\PYG{p}{]}
+            \PYG{n}{cruzamentos}\PYG{p}{:} \PYG{n+nb}{int} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{janela}\PYG{p}{)}\PYG{p}{)}\PYG{p}{:}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{janela}\PYG{p}{[}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0} \PYG{o+ow}{and} \PYG{n}{janela}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{o+ow}{or} \PYG{p}{(}\PYG{n}{janela}\PYG{p}{[}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{o+ow}{and} \PYG{n}{janela}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{)}\PYG{p}{:}
+                    \PYG{n}{cruzamentos} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{1}
+            \PYG{k}{if} \PYG{n}{mod\PYGZus{}digital} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{NRZ\PYGZhy{}Polar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+                \PYG{n}{bit\PYGZus{}stream}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}zero}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}one}\PYG{p}{)} \PYG{k}{else} \PYG{l+m+mi}{1}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n}{mod\PYGZus{}digital} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Bipolar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
+                \PYG{n}{last\PYGZus{}one} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+                \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}zero}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}one}\PYG{p}{)}\PYG{p}{:}
+                    \PYG{n}{last\PYGZus{}one} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{last\PYGZus{}one}
+                    \PYG{n}{bit\PYGZus{}stream}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{last\PYGZus{}one}\PYG{p}{)}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{n}{bit\PYGZus{}stream}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{n}{bit\PYGZus{}stream}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+m+mi}{0} \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}zero}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{cruzamentos} \PYG{o}{\PYGZhy{}} \PYG{n}{f\PYGZus{}one}\PYG{p}{)} \PYG{k}{else} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{bit\PYGZus{}stream}
+\end{MintedVerbatim}

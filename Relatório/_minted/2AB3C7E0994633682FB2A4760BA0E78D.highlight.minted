@@ -1,0 +1,51 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{socket}
+\PYG{k+kn}{import} \PYG{n+nn}{threading}
+\PYG{k}{def} \PYG{n+nf}{iniciar\PYGZus{}servidor}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{thread} \PYG{o}{=} \PYG{n}{threading}\PYG{o}{.}\PYG{n}{Thread}\PYG{p}{(}\PYG{n}{target}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{abrir\PYGZus{}servidor}\PYG{p}{,} \PYG{n}{daemon}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+    \PYG{n}{thread}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{text}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Servidor Aberto...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{disabled}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{abrir\PYGZus{}servidor}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{HOST} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{127.0.0.1}\PYG{l+s+s1}{\PYGZsq{}}
+    \PYG{n}{PORT} \PYG{o}{=} \PYG{l+m+mi}{65432}
+
+    \PYG{n}{server\PYGZus{}socket} \PYG{o}{=} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{socket}\PYG{p}{(}\PYG{n}{socket}\PYG{o}{.}\PYG{n}{AF\PYGZus{}INET}\PYG{p}{,} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{SOCK\PYGZus{}STREAM}\PYG{p}{)}
+
+    \PYG{n}{erro\PYGZus{}decod} \PYG{o}{=} \PYG{k+kc}{False}
+    \PYG{k}{try}\PYG{p}{:}
+        \PYG{n}{server\PYGZus{}socket}\PYG{o}{.}\PYG{n}{bind}\PYG{p}{(}\PYG{p}{(}\PYG{n}{HOST}\PYG{p}{,} \PYG{n}{PORT}\PYG{p}{)}\PYG{p}{)}
+        \PYG{n}{server\PYGZus{}socket}\PYG{o}{.}\PYG{n}{listen}\PYG{p}{(}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Server started at }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{HOST}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{PORT}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Waiting for a connection...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+        \PYG{n}{conn}\PYG{p}{,} \PYG{n}{addr} \PYG{o}{=} \PYG{n}{server\PYGZus{}socket}\PYG{o}{.}\PYG{n}{accept}\PYG{p}{(}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Connected by }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{addr}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{mensagem\PYGZus{}recebida} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+                \PYG{n}{data} \PYG{o}{=} \PYG{n}{conn}\PYG{o}{.}\PYG{n}{recv}\PYG{p}{(}\PYG{l+m+mi}{1024}\PYG{p}{)}
+                \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{data}\PYG{p}{:}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{text}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Abrir Servidor}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{normal}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                    \PYG{k}{break}
+
+                \PYG{n}{string\PYGZus{}recebida} \PYG{o}{=} \PYG{n}{data}\PYG{o}{.}\PYG{n}{decode}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ascii}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{mensagem\PYGZus{}recebida} \PYG{o}{+}\PYG{o}{=} \PYG{n}{string\PYGZus{}recebida}
+
+                \PYG{k}{if} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{END\PYGZus{}OF\PYGZus{}SEQUENCE}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o+ow}{in} \PYG{n}{string\PYGZus{}recebida}\PYG{p}{:}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{text}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Abrir Servidor}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{botao\PYGZus{}abrir\PYGZus{}servidor}\PYG{o}{.}\PYG{n}{config}\PYG{p}{(}\PYG{n}{state}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{normal}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                    \PYG{k}{break}
+        \PYG{k}{except} \PYG{n+ne}{ConnectionResetError}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{A conexão foi encerrada pelo cliente.}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{finally}\PYG{p}{:}
+            \PYG{n}{server\PYGZus{}socket}\PYG{o}{.}\PYG{n}{close}\PYG{p}{(}\PYG{p}{)}
+    \PYG{k}{except} \PYG{n+ne}{Exception} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Erro no servidor: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{e}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{finally}\PYG{p}{:}
+        \PYG{n}{server\PYGZus{}socket}\PYG{o}{.}\PYG{n}{close}\PYG{p}{(}\PYG{p}{)}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{erro\PYGZus{}decod}\PYG{p}{:}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{root}\PYG{o}{.}\PYG{n}{after}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{decodificar\PYGZus{}mensagem}\PYG{p}{,} \PYG{n}{mensagem\PYGZus{}recebida}\PYG{p}{)}
+\end{MintedVerbatim}
