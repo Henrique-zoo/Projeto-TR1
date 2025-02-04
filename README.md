@@ -24,7 +24,9 @@ O primeiro passo para executar a simulação é instalar o [Python](https://www.
 
 O modelo OSI (Open Systems Interconnection) é um modelo de referência que descreve as funções de comunicação em redes de computadores. O modelo é dividido em sete camadas, cada uma responsável por funções específicas que garantem a comunicação eficiente entre dispositivos.
 
-![Modelo OSI de sete camadas](Relatório/image/Modelo_Osi.png)
+<div align="center">
+  <img src="Relatório/image/Modelo_Osi.png" alt="Modelo OSI de sete camadas">
+</div>
 
 Este relatório descreve a implementação de um simulador que aborda as camadas física e de enlace do modelo OSI. O objetivo principal é simular o funcionamento dessas camadas, incluindo técnicas de modulação digital (NRZ-Polar, Manchester e Bipolar), modulação por portadora (ASK, FSK e 8-QAM), enquadramento de dados (Contagem de Caracteres e Inserção de Bytes), detecção e correção de erros (Bit de Paridade, Código de Redundância Cíclica - CRC e Código de Hamming). O simulador foi desenvolvido em Python, proporcionando uma visão prática dos mecanismos fundamentais que garantem a transmissão eficiente e confiável de dados em redes de computadores.
 
@@ -67,6 +69,10 @@ Por sua vez, o receptor exibe uma interface gráfica que permite visualizar o si
 
 Após configurar os parâmetros no transmissor e abrir o servidor no receptor, o usuário deve clicar no botão "Enviar Dados" na interface do transmissor para iniciar a transmissão. Esse processo garante que os dados sejam enviados e recebidos corretamente, permitindo a simulação completa da comunicação entre os dois pontos.
 
-![Interface gráfica do transmissor](Relatório/image/interface_transmissor.png)
+<div align="center">
+  <img src="Relatório/image/interface_transmissor.png" alt="Interface gráfica do transmissor">
+</div>
 
-![Interface gráfica do receptor](Relatório/image/interface_receptor.png)
+<div align="center">
+  <img src="Relatório/image/interface_receptor.png" alt="Interface gráfica do receptor">
+</div>
