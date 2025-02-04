@@ -24,7 +24,7 @@ O primeiro passo para executar a simulação é instalar o [Python](https://www.
 
 O modelo OSI (Open Systems Interconnection) é um modelo de referência que descreve as funções de comunicação em redes de computadores. O modelo é dividido em sete camadas, cada uma responsável por funções específicas que garantem a comunicação eficiente entre dispositivos.
 
-![Modelo OSI de sete camadas](image/Modelo_Osi.png)
+![Modelo OSI de sete camadas](Relatório/image/Modelo_Osi.png)
 
 Este relatório descreve a implementação de um simulador que aborda as camadas física e de enlace do modelo OSI. O objetivo principal é simular o funcionamento dessas camadas, incluindo técnicas de modulação digital (NRZ-Polar, Manchester e Bipolar), modulação por portadora (ASK, FSK e 8-QAM), enquadramento de dados (Contagem de Caracteres e Inserção de Bytes), detecção e correção de erros (Bit de Paridade, Código de Redundância Cíclica - CRC e Código de Hamming). O simulador foi desenvolvido em Python, proporcionando uma visão prática dos mecanismos fundamentais que garantem a transmissão eficiente e confiável de dados em redes de computadores.
 
