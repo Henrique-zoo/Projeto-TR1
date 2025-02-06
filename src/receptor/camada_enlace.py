@@ -138,7 +138,7 @@ class CamadaEnlaceReceptor:
         n: int = len(hamming_code)  # Número total de bits no código de Hamming
         print(n)
         # Calcula o número de bits de paridade
-        while (2**r) < n + 1:
+        while (2**r) < n:
             r += 1
         
         # Verifica se há erros e corrige, se necessário
@@ -147,7 +147,7 @@ class CamadaEnlaceReceptor:
             pos = 2**i # Posição do bit de paridade (1-based index)
             paridade = 0
             for j in range(n):
-                if j + 1 & pos:  # Se o bit i está ativado em j
+                if j + 1 & pos:  # Se o bit pos está ativado em j
                     paridade ^= hamming_code[j]
             if paridade != 0:
                 error_position += pos - 1

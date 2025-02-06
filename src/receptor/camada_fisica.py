@@ -63,14 +63,14 @@ class CamadaFisicaReceptor:
             dig_signal: list[int] = []
             last_one = -1
             for i in range(0, len(signal), self.sample):
-                if (max(signal[i:i+self.sample]) - amp_zero) > (max(signal[i:i+self.sample]) - amp_one):
+                if (max(signal[i:i+self.sample]) > (amp_zero + amp_one) / 2):
                     last_one = -last_one
                     dig_signal.append(last_one)
                 else:
                     dig_signal.append(0)
             return dig_signal
         else:
-            return [1 if (max(signal[i:i+self.sample]) - amp_zero) > (max(signal[i:i+self.sample]) - amp_one) else 0 for i in range(0, len(signal), self.sample)]
+            return [1 if max(signal[i:i+self.sample]) > (amp_zero + amp_one) / 2 else 0 for i in range(0, len(signal), self.sample)]
     
     # FSK decoding function
     def decodificar_fsk(self, mod_signal: list[float], mod_digital: str, f_zero: float = 0.0, f_one: float = 1.0) -> list[int]:
