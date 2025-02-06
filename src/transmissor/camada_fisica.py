@@ -65,7 +65,7 @@ class CamadaFisicaTransmissor:
         for i in range(len(dig_signal)):  # Para cada bit do sinal digital
             for j in range(self.sample):  # Gera amostras para cada bit
                 t: float = j / self.sample
-                if ((dig_signal[i] == 1 or dig_signal == -1) and not nrz_polar) or dig_signal[i] == 1:
+                if ((dig_signal[i] == 1 or dig_signal[i] == -1) and not nrz_polar) or dig_signal[i] == 1:
                     signal[i * self.sample + j] = amp_one * sin(2*pi*self.frequencia*t + self.fase)  # A * sen (2pi*f*t + ø) - sinal para 1 (ou -1 se não for NRZ-Polar)
                 else:
                     signal[i * self.sample + j] = amp_zero * sin(2*pi*self.frequencia*t + self.fase)  # Sinal para 0 (ou -1 se for NRZ-Polar)
