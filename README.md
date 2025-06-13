@@ -1,5 +1,5 @@
 # SimulNet - Projeto de TR1
-Esse é o projeto final da matéria Teleinformática e Redes 1 da Universidade de Brasília (UnB) do semestre 2024/2, ministrada pelo professor Marcelo Marotta. Ele foi desenvolvido em Python. Seu funcionamento e técnologias utilizadas são apresentados à seguir.
+Esse é o projeto final da matéria Teleinformática e Redes 1 da Universidade de Brasília (UnB) do semestre 2024/2, ministrada pelo professor Marcelo Marotta. Ele foi desenvolvido em Python. Seu funcionamento e tecnologias utilizadas são apresentados à seguir.
 
 ## Sumário
 1. [Preparação](#preparação)
